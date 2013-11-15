@@ -1,6 +1,8 @@
 MailView -- Visual email testing
 ================================
 
+This is a fork from 37signals MailView gem, i'll add some changes to make the interface more flexible, with the posibility to add groups and sort & search functions
+
 Preview plain text and html mail templates in your browser without redelivering it every time you make a change.
 
 Install
@@ -9,9 +11,7 @@ Install
 Add the gem to your `Gemfile`:
 
 ```ruby
-  gem 'mail_view', :git => 'https://github.com/37signals/mail_view.git'
-  # or
-  gem "mail_view", "~> 1.0.3"
+  gem 'mail_view', :git => 'https://github.com/LucasPadovan/mail_view.git'
 ```
 
 And run `bundle install`.
@@ -25,14 +25,14 @@ Since most emails do something interesting with database data, you'll need to wr
   # app/mailers/mail_preview.rb or lib/mail_preview.rb
   class MailPreview < MailView
     # Pull data from existing fixtures
-    def invitation
+    def groupName_invitation
       account = Account.first
       inviter, invitee = account.users[0, 2]
       Notifier.invitation(inviter, invitee) 
     end
 
     # Factory-like pattern
-    def welcome
+    def groupName_welcome
       user = User.create!
       mail = Notifier.welcome(user)
       user.destroy
@@ -40,7 +40,7 @@ Since most emails do something interesting with database data, you'll need to wr
     end
 
     # Stub-like
-    def forgot_password
+    def groupName_forgot_password
       user = Struct.new(:email, :name).new('name@example.com', 'Jill Smith')
       mail = UserMailer.forgot_password(user)
     end

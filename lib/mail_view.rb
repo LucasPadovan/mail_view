@@ -25,8 +25,11 @@ class MailView
     request = Rack::Request.new(env)
 
     if request.path_info == "" || request.path_info == "/"
-      links = self.actions.map do |action|
-        [action, "#{request.script_name}/#{action}"]
+      links = {}
+      self.actions.map do |action|
+        action_group, *action_name = action.split(/_/)
+        links[action_group.to_sym] ||= []
+        links[action_group.to_sym] << [action_name.join('_'), "#{request.script_name}/#{action}"]
       end
 
       ok index_template.render(Object.new, :links => links)
