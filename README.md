@@ -1,7 +1,9 @@
 MailView -- Visual email testing
 ================================
 
-This is a fork from 37signals MailView gem, i'll add some changes to make the interface more flexible, with the posibility to add groups and sort & search functions
+This is a fork from 37signals MailView gem (now basecamp gem i think), i'll add some changes to make the interface more flexible with the posibility to add groups
+
+TODO: sort & search functions
 
 Preview plain text and html mail templates in your browser without redelivering it every time you make a change.
 
