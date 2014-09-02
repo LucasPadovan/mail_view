@@ -17,7 +17,7 @@ class MailView
     end
 
     def call(env)
-      MAIL_PREVIEW_COUNTRY.replace env['SERVER_NAME'][-2..-1] if USE_TLD
+      MAIL_PREVIEW_COUNTRY.replace env['HTTP_HOST'][/[^:]+/][-2..-1] if USE_TLD
       new.call(env)
     end
   end
