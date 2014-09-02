@@ -3,6 +3,8 @@ MailView -- Visual email testing
 
 This is a fork from 37signals MailView gem (now basecamp gem i think), i'll add some changes to make the interface more flexible with the posibility to add groups
 
+Now you can use the mailer in different locales by tracking the Top Level Domain (TLD).
+
 TODO: sort & search functions
 
 Preview plain text and html mail templates in your browser without redelivering it every time you make a change.
@@ -17,6 +19,20 @@ Add the gem to your `Gemfile`:
 ```
 
 And run `bundle install`.
+
+Then you should create the following file.
+Title and Extended Title are used in the index of the mail view.
+Setting true the USE_TLD constant will allow you to track the top level domain for localization purposes
+
+```ruby
+# config/initializers/mail_preview.rb
+class MailView
+  TITLE                = 'Title'
+  EXTENDED_TITLE       = 'Extended title'
+  USE_TLD              = true
+  MAIL_PREVIEW_COUNTRY = ''
+end
+```
 
 Usage
 -----
@@ -78,6 +94,57 @@ Interface
 ![Plain text view](http://img18.imageshack.us/img18/1066/plaintext.png)
 ![HTML view](http://img269.imageshack.us/img269/2944/htmlz.png)
 
+Using localization with TLD
+---------------------------
+
+In your initializer you should have
+```ruby
+USE_TLD = true
+```
+
+then you can do something like this in your scenarios
+
+```ruby
+# app/mailers/mail_preview.rb or lib/mail_preview.rb
+    #[...]
+
+  def stub_mailer
+    user = User.where(where_country).last
+    UserMailer.deliver(user)
+  end
+
+  private
+    def country
+      I18n.locale = :es
+      case MAIL_PREVIEW_COUNTRY
+        when 'br'
+          I18n.locale = :pt
+          'Brasil'
+        when 'cl'
+          'Chile'
+        when 'co'
+          'Colombia'
+        when 'mx'
+          'Mexico'
+        else
+          'Argentina'
+      end
+    end
+
+    def where_country
+      ['country = ?', country]
+    end
+```
+
+and this way you can test your localized templates that depends on the country of the User.
 
 [1]: http://github.com/mikel/mail
 [2]: http://github.com/mikel/tmail
+
+
+Disclaimer: the TLD functionality was created for a very specific architecture,
+maybe you have to tweak a little your mailers to get full functionality.
+Feel free to contact me or open issue tickets.
+
+Regards
+LucasPadovan
