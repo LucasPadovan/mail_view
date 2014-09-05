@@ -22,9 +22,8 @@ class MailView
   end
 
   def call(env)
-    url_scheme = env['rack.url_scheme']
-    host = url_scheme.upcase + '_HOST'
-    @@mail_preview_country = env[host][/[^:]+/][-2,2] if USE_TLD
+    host = env['HTTP_HOST'][/[^:]+/]
+    @@mail_preview_country = host[-2,2] if USE_TLD
     request = Rack::Request.new(env)
 
     if request.path_info == "" || request.path_info == "/"
