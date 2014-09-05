@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'mail_view'
-  s.version = '2.1.1'
+  s.version = '2.1.3'
   s.author = 'Josh Peek'
   s.email = 'josh@joshpeek.com'
   s.summary = 'Visual email testing'
